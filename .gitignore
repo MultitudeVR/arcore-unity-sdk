@@ -3,6 +3,7 @@ Builds/
 Temp/
 Library/
 obj/
+.vs/
 # Visual Studio / MonoDevelop generated
 *.csproj
 *.unityproj
