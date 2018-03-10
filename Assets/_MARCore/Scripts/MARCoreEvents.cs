@@ -6,6 +6,9 @@ using GoogleARCore;
 
 public class MARCoreEvents : MonoBehaviour
 {
+    private static MARCoreEvents _instance = null;
+    public static MARCoreEvents Instance { get { return _instance; } }
+
     public static event Action GainedTracking;
     public static event Action LostTracking;
     public static event Action<List<TrackedPlane>> GainedTrackedPlanes;
@@ -17,11 +20,24 @@ public class MARCoreEvents : MonoBehaviour
 
     private int trackingPlaneCount = 0;
 
+    private void Awake()
+    {
+        if(_instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+        _instance = this;
+    }
     private void Update()
     {
         GetTrackablesAndExecuteTrackingEvents();
     }
-
+    private void OnDestroy()
+    {
+        if (_instance == this)
+            _instance = null;
+    }
     private void GetTrackablesAndExecuteTrackingEvents()
     {
         Session.GetTrackables(allPlanes);
